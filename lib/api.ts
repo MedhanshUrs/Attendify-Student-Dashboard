@@ -1,8 +1,8 @@
-export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 export const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000';
 
 export async function fetchCurrentSession() {
-  const response = await fetch(`${BACKEND_URL}/api/sessions/current`, {
+  const response = await fetch(`${API_URL}/api/sessions/current`, {
     cache: 'no-store',
   });
   if (!response.ok) throw new Error('Failed to fetch current session');
@@ -23,7 +23,7 @@ export async function verifyQrAttendance({
   formData.append('student_id', studentId);
   formData.append('selfie', selfieBlob, 'selfie.jpg');
 
-  const response = await fetch(`${BACKEND_URL}/api/qr/verify`, {
+  const response = await fetch(`${API_URL}/api/qr/verify`, {
     method: 'POST',
     body: formData,
   });
