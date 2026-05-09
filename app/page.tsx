@@ -6,10 +6,12 @@ import { AttendanceHistory } from "@/components/dashboard/attendance-history"
 import { AttendanceAnalytics } from "@/components/dashboard/attendance-analytics"
 import { AttendanceStreak } from "@/components/dashboard/attendance-streak"
 import { AIInsights } from "@/components/dashboard/ai-insights"
+import { SessionNotificationBanner } from "@/components/dashboard/session-notification-banner"
 
 export default function StudentDashboard() {
   return (
     <div className="min-h-screen bg-background">
+      <SessionNotificationBanner />
       <StudentHeader />
       
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">

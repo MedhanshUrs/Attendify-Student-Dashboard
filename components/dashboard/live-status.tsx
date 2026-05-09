@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useState, useEffect } from "react"
 import { fetchCurrentSession, WebSocketService } from "@/lib/api"
+import { useSessionSync } from "@/hooks/use-session-sync"
 
 const initialSession = {
   subject: "Artificial Intelligence",
@@ -25,6 +26,33 @@ export function LiveStatus() {
 
   // Using mock student ID 1 (Arjun Sharma) for simulation
   const myStudentId = "1"
+
+  // Listen to localStorage session sync
+  const { isActive: localStorageSessionActive, sessionJustStarted, sessionJustEnded } = useSessionSync()
+
+  // React to localStorage session changes
+  useEffect(() => {
+    if (sessionJustStarted) {
+      setIsLive(true)
+      setStudentStatus('pending')
+      setMarkedAt(null)
+      setAttendeesPresent(0)
+    }
+  }, [sessionJustStarted])
+
+  useEffect(() => {
+    if (sessionJustEnded) {
+      setIsLive(false)
+      setStudentStatus((prev) => (prev === 'pending' ? 'absent' : prev))
+    }
+  }, [sessionJustEnded])
+
+  // Also sync with localStorage active state on mount
+  useEffect(() => {
+    if (localStorageSessionActive && !isLive) {
+      setIsLive(true)
+    }
+  }, [localStorageSessionActive, isLive])
 
   useEffect(() => {
     const loadCurrentSession = async () => {
